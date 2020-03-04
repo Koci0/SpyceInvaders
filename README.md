@@ -2,7 +2,25 @@
 
 Project that aims to create a Space Invaders like game in Python using Pygame, thus the name. It is created as a project Symbolic Language course at Cracow University of Technology.
 
-### Prerequisites
+## Main project goals
+
+### Main game mechanics
+[ ] Player moves
+[ ] Player shoots
+[ ] Player dies
+[ ] Buildings receive damage
+[ ] Buildings get destroyed
+[ ] Aliens move
+[ ] Aliens die
+[ ] Aliens shoot
+
+### Additional project goals
+
+[ ] Add different types of bullets and/or weapons
+[ ] Add different level layouts
+[ ] Add building upgrades with self-defending mechanisms
+
+## Prerequisites
 
 Project is based on Python 3 and Pygame module.
 
