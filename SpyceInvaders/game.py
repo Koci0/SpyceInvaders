@@ -23,6 +23,12 @@ class Game(object):
                     if event.key == pygame.K_ESCAPE:
                         running = False
 
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_a]:
+                self.entity.move("left")
+            elif keys[pygame.K_d]:
+                self.entity.move("right")
+
             self.clock.tick(self.fps)
             self.screen.draw_text("FPS: {:.0f}".format(self.clock.get_fps()))
             self.screen.draw_entity(self.entity)
