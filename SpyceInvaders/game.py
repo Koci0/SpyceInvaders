@@ -1,5 +1,6 @@
 import pygame
 
+from SpyceInvaders.entity import Entity
 from SpyceInvaders.screen import Screen
 
 
@@ -9,6 +10,8 @@ class Game(object):
         self.screen = Screen(width, height)
         self.clock = pygame.time.Clock()
         self.fps = fps
+
+        self.entity = Entity("ball", 100, 100)
 
     def run(self):
         running = True
@@ -22,6 +25,7 @@ class Game(object):
 
             self.clock.tick(self.fps)
             self.screen.draw_text("FPS: {:.0f}".format(self.clock.get_fps()))
+            self.screen.draw_entity(self.entity)
 
             pygame.display.flip()
             self.screen.surface.blit(self.screen.background, (0, 0))

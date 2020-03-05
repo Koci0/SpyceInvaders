@@ -20,3 +20,6 @@ class Screen(object):
         fw, fh = self.font.size(text)
         surface = self.font.render(text, True, white)
         self.surface.blit(surface, (0, 0))
+
+    def draw_entity(self, entity):
+        self.surface.blit(entity.image, (entity.x, entity.y))
