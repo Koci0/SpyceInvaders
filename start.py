@@ -1,4 +1,4 @@
-from SpyceInvaders.core import run
+from SpyceInvaders.game import Game
 
 if __name__ == '__main__':
-    run()
+    Game().run()
