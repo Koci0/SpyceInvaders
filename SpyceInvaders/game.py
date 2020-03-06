@@ -1,7 +1,7 @@
 import pygame
 
-from SpyceInvaders.screen import Screen
 from SpyceInvaders.player import Player
+from SpyceInvaders.screen import Screen
 
 
 class Game(object):
@@ -11,7 +11,7 @@ class Game(object):
         self.clock = pygame.time.Clock()
         self.fps = fps
 
-        self.player = Player("player", width//2, height*(7/8))
+        self.player = Player(x=width // 2, y=height * (7 / 8))
 
     def run(self):
         running = True

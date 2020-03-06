@@ -1,8 +1,8 @@
-from SpyceInvaders.entity import Entity
+from SpyceInvaders.creature import Creature
 
 
-class Player(Entity, object):
+class Player(Creature, object):
 
-    def __init__(self, name="player", x=0, y=0):
+    def __init__(self, x, y, name="player"):
         super().__init__(name, x, y)
-        self.speed = 3
+        self.speed = 5
