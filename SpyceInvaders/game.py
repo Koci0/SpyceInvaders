@@ -1,5 +1,6 @@
 import pygame
 
+from SpyceInvaders.alien import Alien
 from SpyceInvaders.bullet import Bullet
 from SpyceInvaders.player import Player
 from SpyceInvaders.screen import Screen
@@ -14,6 +15,7 @@ class Game(object):
 
         self.player = Player(x=width // 2, y=height * (7 / 8))
         self.bullets = []
+        self.alien = Alien(x=width // 2, y=height * (1 / 8))
 
     def run(self):
         running = True
@@ -36,12 +38,15 @@ class Game(object):
 
             self.clock.tick(self.fps)
 
+            self.alien.tick()
+
             for bullet in self.bullets:
                 if bullet.tick():
                     self.bullets.remove(bullet)
 
             self.screen.draw_text("FPS: {:.0f}".format(self.clock.get_fps()))
             self.screen.draw_entity(self.player)
+            self.screen.draw_entity(self.alien)
             for bullet in self.bullets:
                 self.screen.draw_entity(bullet)
 
