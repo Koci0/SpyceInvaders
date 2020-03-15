@@ -1,5 +1,6 @@
 import pygame
 
+from SpyceInvaders.bullet import Bullet
 from SpyceInvaders.player import Player
 from SpyceInvaders.screen import Screen
 
@@ -12,6 +13,7 @@ class Game(object):
         self.fps = fps
 
         self.player = Player(x=width // 2, y=height * (7 / 8))
+        self.bullets = []
 
     def run(self):
         running = True
@@ -28,12 +30,23 @@ class Game(object):
                 self.player.move("left")
             elif keys[pygame.K_d]:
                 self.player.move("right")
+            if keys[pygame.K_SPACE]:
+                self.bullets.append(
+                    Bullet(self.player.x + self.player.rectangle.width // 2, self.player.y, "up"))
 
             self.clock.tick(self.fps)
+
+            for bullet in self.bullets:
+                if bullet.tick():
+                    self.bullets.remove(bullet)
+
             self.screen.draw_text("FPS: {:.0f}".format(self.clock.get_fps()))
             self.screen.draw_entity(self.player)
+            for bullet in self.bullets:
+                self.screen.draw_entity(bullet)
 
             pygame.display.flip()
             self.screen.surface.blit(self.screen.background, (0, 0))
+            print("#bullets = {}".format(len(self.bullets)))
 
         pygame.quit()

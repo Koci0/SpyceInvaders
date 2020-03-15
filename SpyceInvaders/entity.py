@@ -1,4 +1,5 @@
 import SpyceInvaders.settings as settings
+
 from SpyceInvaders.actor import Actor
 
 
@@ -18,3 +19,5 @@ class Entity(Actor, object):
             self.y = self.y + self.speed
         elif direction == "up" and self.y > 0:
             self.y = self.y - self.speed
+        else:
+            return True
