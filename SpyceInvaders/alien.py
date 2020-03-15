@@ -9,7 +9,11 @@ class Alien(Entity, object):
 
     def tick(self):
         if self.move(self.direction):
-            if self.direction == "left":
-                self.direction = "right"
-            else:
-                self.direction = "left"
+            return True
+        return False
+
+    def swap_direction(self):
+        if self.direction == "left":
+            self.direction = "right"
+        else:
+            self.direction = "left"

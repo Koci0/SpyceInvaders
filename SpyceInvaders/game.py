@@ -1,6 +1,6 @@
 import pygame
 
-from SpyceInvaders.alien import Alien
+from SpyceInvaders.alien_group import AlienGroup
 from SpyceInvaders.bullet import Bullet
 from SpyceInvaders.player import Player
 from SpyceInvaders.screen import Screen
@@ -15,7 +15,7 @@ class Game(object):
 
         self.player = Player(x=width // 2, y=height * (7 / 8))
         self.bullets = []
-        self.alien = Alien(x=width // 2, y=height * (1 / 8))
+        self.alien_group = AlienGroup()
 
     def run(self):
         running = True
@@ -38,7 +38,7 @@ class Game(object):
 
             self.clock.tick(self.fps)
 
-            self.alien.tick()
+            self.alien_group.tick()
 
             for bullet in self.bullets:
                 if bullet.tick():
@@ -46,7 +46,8 @@ class Game(object):
 
             self.screen.draw_text("FPS: {:.0f}".format(self.clock.get_fps()))
             self.screen.draw_entity(self.player)
-            self.screen.draw_entity(self.alien)
+            for alien in self.alien_group.aliens:
+                self.screen.draw_entity(alien)
             for bullet in self.bullets:
                 self.screen.draw_entity(bullet)
 
