@@ -5,12 +5,12 @@ Project that aims to create a Space Invaders like game in Python using Pygame, t
 ## Main project goals
 
 ### Main game mechanics
-- [ ] Player moves
-- [ ] Player shoots
+- [X] Player moves
+- [X] Player shoots
 - [ ] Player dies
 - [ ] Buildings receive damage
 - [ ] Buildings get destroyed
-- [ ] Aliens move
+- [X] Aliens move
 - [ ] Aliens die
 - [ ] Aliens shoot
 
@@ -26,7 +26,7 @@ Project is based on Python 3 and Pygame module.
 
 ## Getting Started
 
-It is recommended to use *pipenv* and included Pipfile. First, create new virtual environment for Python 3.7.6, then install dependencies from Pipfile.
+It is recommended to use *pipenv* and included Pipfile. First, create new virtual environment for Python 3.7.7, then install dependencies from Pipfile.
 
 ```
 pipenv --python 3.7
