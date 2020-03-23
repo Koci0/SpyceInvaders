@@ -19,3 +19,6 @@ class Actor(object):
         if self.hp is not None and self.hp <= 0:
             return False
         return True
+
+    def is_collided_with(self, actor):
+        return self.rectangle.colliderect(actor.rectangle)

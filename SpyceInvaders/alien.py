@@ -7,7 +7,7 @@ class Alien(Entity, object):
     def __init__(self, x, y, direction="left", name="alien"):
         super().__init__(name, x, y)
         self.destructible = True
-        self.hp = 10
+        self.hp = 3
         self.speed = 1
         self.direction = direction
 

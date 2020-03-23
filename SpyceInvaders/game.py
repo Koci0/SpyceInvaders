@@ -1,5 +1,6 @@
 import pygame
 
+import SpyceInvaders.settings as settings
 from SpyceInvaders.alien_group import AlienGroup
 from SpyceInvaders.bullet import Bullet
 from SpyceInvaders.player import Player
@@ -46,8 +47,21 @@ class Game(object):
             for bullet in self.player_bullets:
                 if bullet.tick():
                     self.player_bullets.remove(bullet)
+                for alien in self.alien_group.aliens:
+                    if bullet.is_collided_with(alien):
+                        alien.receive_damage(1)
+                        if not alien.is_alive():
+                            self.alien_group.remove(alien)
+                        self.player_bullets.remove(bullet)
+
             for bullet in self.alien_bullets:
                 if bullet.tick():
+                    self.alien_bullets.remove(bullet)
+                if bullet.is_collided_with(self.player):
+                    self.player.receive_damage(10)
+                    if not self.player.is_alive():
+                        self.count_quit()
+                        running = False
                     self.alien_bullets.remove(bullet)
 
             self.screen.draw_text("FPS: {:.0f}".format(self.clock.get_fps()))
@@ -61,6 +75,15 @@ class Game(object):
 
             pygame.display.flip()
             self.screen.surface.blit(self.screen.background, (0, 0))
-            print("#bullets = player:{}, alien:{}".format(len(self.player_bullets), len(self.alien_bullets)))
 
+        pygame.quit()
+
+    def count_quit(self, text="You died!", time=3):
+        self.screen.background.fill(settings.black)
+        self.screen.surface.blit(self.screen.background, (0, 0))
+        print(text)
+        print("Quiting in")
+        for i in range(3, 0, -1):
+            print(i)
+            pygame.time.wait(1000)
         pygame.quit()

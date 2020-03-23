@@ -1,9 +1,9 @@
-from pygame.time import get_ticks
 from random import randint
+
+from pygame.time import get_ticks
 
 import SpyceInvaders.settings as settings
 from SpyceInvaders.alien import Alien
-from SpyceInvaders.bullet import Bullet
 
 
 class AlienGroup(object):
@@ -41,7 +41,10 @@ class AlienGroup(object):
         now = get_ticks()
         if now - self.last_shot >= self.cooldown:
             self.last_shot = now
-            shooter = self.aliens[randint(0, len(self.aliens))]
-            return shooter.spawn_bullet(direction)
+            if len(self.aliens) > 0:
+                shooter = self.aliens[randint(0, len(self.aliens) - 1)]
+                return shooter.spawn_bullet(direction)
         return None
 
+    def remove(self, alien):
+        self.aliens.remove(alien)
