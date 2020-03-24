@@ -7,12 +7,14 @@ Project that aims to create a Space Invaders like game in Python using Pygame, t
 ### Main game mechanics
 - [X] Player moves
 - [X] Player shoots
-- [ ] Player dies
+- [X] Player dies
 - [ ] Buildings receive damage
 - [ ] Buildings get destroyed
 - [X] Aliens move
-- [ ] Aliens die
-- [ ] Aliens shoot
+- [X] Aliens die
+- [X] Aliens shoot
+- [ ] Proper 'Game Over' conditions
+- [ ] Leaderboard 
 
 ### Additional project goals
 
