@@ -21,6 +21,7 @@ class Game(object):
 
     def run(self):
         running = True
+        player_died = False
         while running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -60,11 +61,12 @@ class Game(object):
                 if bullet.is_collided_with(self.player):
                     self.player.receive_damage(10)
                     if not self.player.is_alive():
-                        self.count_quit()
+                        player_died = True
                         running = False
                     self.alien_bullets.remove(bullet)
 
             self.screen.draw_text("FPS: {:.0f}".format(self.clock.get_fps()))
+            self.screen.draw_health_bar(self.player.hp)
             self.screen.draw_entity(self.player)
             for alien in self.alien_group.aliens:
                 self.screen.draw_entity(alien)
@@ -76,10 +78,13 @@ class Game(object):
             pygame.display.flip()
             self.screen.surface.blit(self.screen.background, (0, 0))
 
+        if player_died:
+            self.count_quit()
         pygame.quit()
 
     def count_quit(self, text="You died!", time=3):
         self.screen.background.fill(settings.black)
+        pygame.display.flip()
         self.screen.surface.blit(self.screen.background, (0, 0))
         print(text)
         print("Quiting in")
