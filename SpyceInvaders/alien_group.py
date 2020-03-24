@@ -1,3 +1,7 @@
+from random import randint
+
+from pygame.time import get_ticks
+
 import SpyceInvaders.settings as settings
 from SpyceInvaders.alien import Alien
 
@@ -13,6 +17,8 @@ class AlienGroup(object):
             for j in range(self.columns):
                 self.aliens.append(
                     Alien((j + 1) * spacing, (i + 1) * spacing))
+        self.cooldown = 500
+        self.last_shot = get_ticks()
         self.direction = direction
 
     def tick(self):
@@ -25,7 +31,20 @@ class AlienGroup(object):
         if swap:
             self.swap_direction()
 
+        return self.shoot()
+
     def swap_direction(self):
         for alien in self.aliens:
             alien.swap_direction()
 
+    def shoot(self, direction="down"):
+        now = get_ticks()
+        if now - self.last_shot >= self.cooldown:
+            self.last_shot = now
+            if len(self.aliens) > 0:
+                shooter = self.aliens[randint(0, len(self.aliens) - 1)]
+                return shooter.spawn_bullet(direction)
+        return None
+
+    def remove(self, alien):
+        self.aliens.remove(alien)
