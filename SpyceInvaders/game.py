@@ -37,7 +37,7 @@ class Game(object):
                 self.player.move("right")
             if keys[pygame.K_SPACE]:
                 self.player_bullets.append(
-                    Bullet(self.player.x + self.player.rectangle.width // 2, self.player.y, "up"))
+                    Bullet(self.player.rectangle.x + self.player.rectangle.width // 2, self.player.rectangle.y, "up"))
 
             self.clock.tick(self.fps)
 

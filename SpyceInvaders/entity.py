@@ -12,16 +12,14 @@ class Entity(Actor, object):
 
     def move(self, direction):
         result = False
-        if direction == "left" and self.x > 0:
-            self.x = self.x - self.speed
-        elif direction == "right" and self.x < settings.screen_width - self.rectangle.width:
-            self.x = self.x + self.speed
-        elif direction == "down" and self.y < settings.screen_height - self.rectangle.height:
-            self.y = self.y + self.speed
-        elif direction == "up" and self.y > 0:
-            self.y = self.y - self.speed
+        if direction == "left" and self.rectangle.x > 0:
+            self.rectangle.x = self.rectangle.x - self.speed
+        elif direction == "right" and self.rectangle.x < settings.screen_width - self.rectangle.width:
+            self.rectangle.x = self.rectangle.x + self.speed
+        elif direction == "down" and self.rectangle.y < settings.screen_height - self.rectangle.height:
+            self.rectangle.y = self.rectangle.y + self.speed
+        elif direction == "up" and self.rectangle.y > 0:
+            self.rectangle.y = self.rectangle.y - self.speed
         else:
             result = True
-        self.rectangle.x = self.x
-        self.rectangle.y = self.y
         return result

@@ -36,4 +36,4 @@ class Screen(object):
         self.surface.blit(surface, (0, 20))
 
     def draw_entity(self, entity):
-        self.surface.blit(entity.image, (entity.x, entity.y))
+        self.surface.blit(entity.image, (entity.rectangle.x, entity.rectangle.y))
