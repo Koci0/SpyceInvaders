@@ -6,3 +6,4 @@ screen_width = 800
 screen_height = 600
 
 player_hp = 100
+building_hp = 1

@@ -2,6 +2,7 @@ import pygame
 
 import SpyceInvaders.settings as settings
 from SpyceInvaders.alien_group import AlienGroup
+from SpyceInvaders.building import Building
 from SpyceInvaders.bullet import Bullet
 from SpyceInvaders.player import Player
 from SpyceInvaders.screen import Screen
@@ -16,6 +17,11 @@ class Game(object):
 
         self.player = Player(x=width // 2, y=height * (7 / 8))
         self.player_bullets = []
+        self.building_list = [
+            Building(x=width // 4, y=height * (5 / 8)),
+            Building(x=2 * width // 4, y=height * (5 / 8)),
+            Building(x=3 * width // 4, y=height * (5 / 8))
+        ]
         self.alien_group = AlienGroup()
         self.alien_bullets = []
 
@@ -64,10 +70,18 @@ class Game(object):
                         player_died = True
                         running = False
                     self.alien_bullets.remove(bullet)
+                for building in self.building_list:
+                    if bullet.is_collided_with(building):
+                        building.receive_damage(10)
+                        if not building.is_alive():
+                            self.building_list.remove(building)
+                        self.alien_bullets.remove(bullet)
 
             self.screen.draw_text("FPS: {:.0f}".format(self.clock.get_fps()))
             self.screen.draw_health_bar(self.player.hp)
             self.screen.draw_entity(self.player)
+            for building in self.building_list:
+                self.screen.draw_entity(building)
             for alien in self.alien_group.aliens:
                 self.screen.draw_entity(alien)
             for bullet in self.player_bullets:
