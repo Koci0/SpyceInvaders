@@ -60,6 +60,12 @@ class Game(object):
                         if not alien.is_alive():
                             self.alien_group.remove(alien)
                         self.player_bullets.remove(bullet)
+                for building in self.building_list:
+                    if bullet.is_collided_with(building):
+                        building.receive_damage(10)
+                        if not building.is_alive():
+                            self.building_list.remove(building)
+                        self.alien_bullets.remove(bullet)
 
             for bullet in self.alien_bullets:
                 if bullet.tick():
