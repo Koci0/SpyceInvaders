@@ -28,6 +28,24 @@ class Game(object):
         self.running = True
         self.player_died = False
 
+    def run(self):
+        while self.running:
+            self.handle_events()
+            self.clock.tick(self.fps)
+
+            # Move all aliens and check for spawned bullets
+            alien_bullet = self.alien_group.tick()
+            if alien_bullet:
+                self.alien_bullets.append(alien_bullet)
+
+            self.move_all_bullets()
+            self.detect_all_collisions()
+            self.draw_all_actors()
+
+        if self.player_died:
+            self.count_quit()
+        pygame.quit()
+
     def handle_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -46,7 +64,9 @@ class Game(object):
                 Bullet(self.player.rectangle.x + self.player.rectangle.width // 2, self.player.rectangle.y, "up"))
 
     def detect_all_collisions(self):
-        self.detect_collision(self.alien_group.aliens, self.player_bullets)
+        removed = self.detect_collision(self.alien_group.aliens, self.player_bullets)
+        if removed is not None:
+            self.alien_group.increase_difficulty()
         self.detect_collision(self.building_list, self.player_bullets)
         self.detect_collision([self.player], self.alien_bullets)
         self.detect_collision(self.building_list, self.alien_bullets)
@@ -62,7 +82,9 @@ class Game(object):
                             self.running = False
                         else:
                             targets.remove(target)
+                            return target
                     bullets.remove(bullet)
+        return None
 
     def move_all_bullets(self):
         for bullet in self.player_bullets:
@@ -87,24 +109,6 @@ class Game(object):
 
         pygame.display.flip()
         self.screen.surface.blit(self.screen.background, (0, 0))
-
-    def run(self):
-        while self.running:
-            self.handle_events()
-            self.clock.tick(self.fps)
-
-            # Move all aliens and check for spawned bullets
-            alien_bullet = self.alien_group.tick()
-            if alien_bullet:
-                self.alien_bullets.append(alien_bullet)
-
-            self.move_all_bullets()
-            self.detect_all_collisions()
-            self.draw_all_actors()
-
-        if self.player_died:
-            self.count_quit()
-        pygame.quit()
 
     def count_quit(self, text="You died!", time=3):
         self.screen.background.fill(settings.black)

@@ -23,7 +23,9 @@ class AlienGroup(object):
 
     def tick(self):
         swap = False
+        i = 0
         for alien in self.aliens:
+            i += 1
             if alien:
                 if alien.tick():
                     swap = True
@@ -48,3 +50,9 @@ class AlienGroup(object):
 
     def remove(self, alien):
         self.aliens.remove(alien)
+        self.increase_difficulty()
+
+    def increase_difficulty(self):
+        for alien in self.aliens:
+            alien.speed += settings.difficulty_speed
+        self.cooldown -= settings.difficulty_cooldown

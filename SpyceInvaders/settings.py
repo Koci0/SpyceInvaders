@@ -7,3 +7,6 @@ screen_height = 600
 
 player_hp = 100
 building_hp = 1
+
+difficulty_speed = 0.02
+difficulty_cooldown = 3
