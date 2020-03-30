@@ -23,3 +23,7 @@ class Entity(Actor, object):
         else:
             result = True
         return result
+
+    def receive_damage(self, damage, _, __):
+        if self.destructible and self.hp is not None:
+            self.hp = self.hp - damage

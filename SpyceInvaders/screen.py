@@ -37,3 +37,16 @@ class Screen(object):
 
     def draw_entity(self, entity):
         self.surface.blit(entity.image, (entity.rectangle.x, entity.rectangle.y))
+
+    def draw_building(self, building):
+        width = building.rectangle.width
+        height = building.rectangle.height
+        surface = pygame.Surface((width, height))
+        for h in range(height):
+            for w in range(width):
+                if building.grid[h][w] == 1:
+                    rect = pygame.Rect(w, h, 1, 1)
+                    pygame.draw.rect(surface, settings.blue, rect)
+
+        self.surface.blit(surface, (building.rectangle.x, building.rectangle.y))
+

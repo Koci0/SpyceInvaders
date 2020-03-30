@@ -75,7 +75,7 @@ class Game(object):
         for bullet in bullets:
             for target in targets:
                 if bullet.is_collided_with(target):
-                    target.receive_damage(10)
+                    target.receive_damage(10, bullet.rectangle.x, bullet.direction)
                     if not target.is_alive():
                         if isinstance(target, Player):
                             self.player_died = True
@@ -99,7 +99,7 @@ class Game(object):
         self.screen.draw_health_bar(self.player.hp)
         self.screen.draw_entity(self.player)
         for building in self.building_list:
-            self.screen.draw_entity(building)
+            self.screen.draw_building(building)
         for alien in self.alien_group.aliens:
             self.screen.draw_entity(alien)
         for bullet in self.player_bullets:
