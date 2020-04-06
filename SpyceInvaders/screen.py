@@ -49,4 +49,3 @@ class Screen(object):
                     pygame.draw.rect(surface, settings.blue, rect)
 
         self.surface.blit(surface, (building.rectangle.x, building.rectangle.y))
-

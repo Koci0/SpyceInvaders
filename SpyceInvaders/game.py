@@ -18,9 +18,10 @@ class Game(object):
         self.player = Player(x=width // 2, y=height * (7 / 8))
         self.player_bullets = []
         self.building_list = [
-            Building(x=width // 4, y=height * (5 / 8)),
-            Building(x=2 * width // 4, y=height * (5 / 8)),
-            Building(x=3 * width // 4, y=height * (5 / 8))
+            Building(x=(width - 4 * 60) // 5, y=height * (5 / 8)),
+            Building(x=2 * (width - 4 * 60) // 5 + 1 * 60, y=height * (5 / 8)),
+            Building(x=3 * (width - 4 * 60) // 5 + 2 * 60, y=height * (5 / 8)),
+            Building(x=4 * (width - 4 * 60) // 5 + 3 * 60, y=height * (5 / 8))
         ]
         self.alien_group = AlienGroup()
         self.alien_bullets = []
