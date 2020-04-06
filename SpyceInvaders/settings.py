@@ -10,5 +10,8 @@ screen_height = 600
 player_hp = 100
 building_hp = 1
 
+bullet_damage = 10
+explosion_radius = 5
+
 difficulty_speed = 0.02
 difficulty_cooldown = 3

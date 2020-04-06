@@ -24,6 +24,6 @@ class Entity(Actor, object):
             result = True
         return result
 
-    def receive_damage(self, damage, _, __):
+    def receive_damage(self, _, __, ___):
         if self.destructible and self.hp is not None:
-            self.hp = self.hp - damage
+            self.hp = self.hp - settings.bullet_damage

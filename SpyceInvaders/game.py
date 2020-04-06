@@ -61,7 +61,8 @@ class Game(object):
             self.player.move("right")
         if keys[pygame.K_SPACE]:
             self.player_bullets.append(
-                Bullet(self.player.rectangle.x + self.player.rectangle.width // 2, self.player.rectangle.y, "up"))
+                Bullet(self.player.rectangle.x + self.player.rectangle.width // 2,
+                       self.player.rectangle.y, "up", "normal"))
 
     def detect_all_collisions(self):
         removed = self.detect_collision(self.alien_group.aliens, self.player_bullets)
@@ -75,7 +76,7 @@ class Game(object):
         for bullet in bullets:
             for target in targets:
                 if bullet.is_collided_with(target):
-                    target.receive_damage(10, bullet.rectangle.x, bullet.direction)
+                    target.receive_damage(bullet.type, bullet.rectangle.x, bullet.direction)
                     if not target.is_alive():
                         if isinstance(target, Player):
                             self.player_died = True
