@@ -22,6 +22,6 @@ class Alien(Entity, object):
         else:
             self.direction = "left"
 
-    def spawn_bullet(self, direction):
-        bullet = Bullet(self.rectangle.x + 0.5 * self.rectangle.width, self.rectangle.y, direction)
+    def spawn_bullet(self, direction, type):
+        bullet = Bullet(self.rectangle.x + 0.5 * self.rectangle.width, self.rectangle.y, direction, type)
         return bullet

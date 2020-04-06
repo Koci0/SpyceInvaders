@@ -11,10 +11,6 @@ class Actor(object):
         self.destructible = destructible
         self.hp = hp
 
-    def receive_damage(self, damage):
-        if self.destructible and self.hp is not None:
-            self.hp = self.hp - damage
-
     def is_alive(self):
         if self.hp is not None and self.hp <= 0:
             return False

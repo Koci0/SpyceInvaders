@@ -39,13 +39,13 @@ class AlienGroup(object):
         for alien in self.aliens:
             alien.swap_direction()
 
-    def shoot(self, direction="down"):
+    def shoot(self, direction="down", type="explosive"):
         now = get_ticks()
         if now - self.last_shot >= self.cooldown:
             self.last_shot = now
             if len(self.aliens) > 0:
                 shooter = self.aliens[randint(0, len(self.aliens) - 1)]
-                return shooter.spawn_bullet(direction)
+                return shooter.spawn_bullet(direction, type)
         return None
 
     def remove(self, alien):
