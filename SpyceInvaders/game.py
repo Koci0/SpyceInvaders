@@ -10,7 +10,7 @@ from SpyceInvaders.screen import Screen
 
 class Game(object):
 
-    def __init__(self, width=800, height=600, fps=60):
+    def __init__(self, width=settings.screen_width, height=settings.screen_height, fps=60):
         self.screen = Screen(width, height)
         self.clock = pygame.time.Clock()
         self.fps = fps
@@ -118,7 +118,7 @@ class Game(object):
         self.screen.surface.blit(self.screen.background, (0, 0))
         print(text)
         print("Quiting in")
-        for i in range(3, 0, -1):
+        for i in range(time, 0, -1):
             print(i)
             pygame.time.wait(1000)
         pygame.quit()

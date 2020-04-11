@@ -32,5 +32,5 @@ class Building(Actor, object):
                 for dx in range(-settings.explosion_radius, settings.explosion_radius + 1):
                     y_coord = hit_point_y + dy
                     x_coord = hit_point_x + dx
-                    if x_coord >= 0 and x_coord < self.rectangle.width:
+                    if 0 <= x_coord < self.rectangle.width:
                         self.grid[y_coord][x_coord] = 0

@@ -11,7 +11,6 @@ class Entity(Actor, object):
         self.cooldown = cooldown
 
     def move(self, direction):
-        result = False
         if direction == "left" and self.rectangle.x > 0:
             self.rectangle.x = self.rectangle.x - self.speed
         elif direction == "right" and self.rectangle.x < settings.screen_width - self.rectangle.width:
@@ -21,8 +20,8 @@ class Entity(Actor, object):
         elif direction == "up" and self.rectangle.y > 0:
             self.rectangle.y = self.rectangle.y - self.speed
         else:
-            result = True
-        return result
+            return True
+        return False
 
     def receive_damage(self, _, __, ___):
         if self.destructible and self.hp is not None:

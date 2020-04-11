@@ -16,14 +16,13 @@ class Screen(object):
         self.font = pygame.font.SysFont("mono", 16)
 
     def draw_text(self, text):
-        fw, fh = self.font.size(text)
         surface = self.font.render(text, True, settings.white)
         self.surface.blit(surface, (0, 0))
 
     def draw_health_bar(self, percent):
-        width = 100
-        height = 12
-        border = 4
+        width = settings.health_bar_width
+        height = settings.health_bar_height
+        border = settings.health_bar_border
         surface = pygame.Surface((2 * width + 2 * border, height + 2 * border))
         # Border rectangle
         rect = pygame.Rect(0, 0, width + 2 * border, height + 2 * border)

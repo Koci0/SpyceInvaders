@@ -1,3 +1,4 @@
+import SpyceInvaders.settings as settings
 from SpyceInvaders.bullet import Bullet
 from SpyceInvaders.entity import Entity
 
@@ -7,8 +8,8 @@ class Alien(Entity, object):
     def __init__(self, x, y, direction="left", name="alien"):
         super().__init__(name, x, y)
         self.destructible = True
-        self.hp = 3
-        self.speed = 1
+        self.hp = settings.alien_hp
+        self.speed = 1.0
         self.direction = direction
 
     def tick(self):
@@ -22,6 +23,6 @@ class Alien(Entity, object):
         else:
             self.direction = "left"
 
-    def spawn_bullet(self, direction, type):
-        bullet = Bullet(self.rectangle.x + 0.5 * self.rectangle.width, self.rectangle.y, direction, type)
+    def spawn_bullet(self, direction, bullet_type):
+        bullet = Bullet(self.rectangle.x + 0.5 * self.rectangle.width, self.rectangle.y, direction, bullet_type)
         return bullet
