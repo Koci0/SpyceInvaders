@@ -61,9 +61,9 @@ class Game(object):
         elif keys[pygame.K_d]:
             self.player.move("right")
         if keys[pygame.K_SPACE]:
-            self.player_bullets.append(
-                Bullet(self.player.rectangle.x + self.player.rectangle.width // 2,
-                       self.player.rectangle.y, "up", "normal"))
+            bullet = self.player.shoot("up")
+            if bullet:
+                self.player_bullets.append(bullet)
 
     def detect_all_collisions(self):
         removed = self.detect_collision(self.alien_group.aliens, self.player_bullets)

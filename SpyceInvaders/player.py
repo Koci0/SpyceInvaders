@@ -23,5 +23,5 @@ class Player(Entity, object):
         return None
 
     def spawn_bullet(self, direction):
-        bullet = Bullet(self.rectangle.x + 0.5 * self.rectangle.width, self.rectangle.y, "normal", direction)
+        bullet = Bullet(self.rectangle.x + 0.5 * self.rectangle.width, self.rectangle.y, direction, "normal")
         return bullet
