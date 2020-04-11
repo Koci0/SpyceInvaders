@@ -8,8 +8,8 @@ Project that aims to create a Space Invaders like game in Python using Pygame, t
 - [X] Player moves
 - [X] Player shoots
 - [X] Player dies
-- [ ] Buildings receive damage
-- [ ] Buildings get destroyed
+- [X] Buildings receive damage
+- [X] Buildings get destroyed
 - [X] Aliens move
 - [X] Aliens die
 - [X] Aliens shoot
