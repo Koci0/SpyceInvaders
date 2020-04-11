@@ -16,14 +16,13 @@ class Screen(object):
         self.font = pygame.font.SysFont("mono", 16)
 
     def draw_text(self, text):
-        fw, fh = self.font.size(text)
         surface = self.font.render(text, True, settings.white)
         self.surface.blit(surface, (0, 0))
 
     def draw_health_bar(self, percent):
-        width = 100
-        height = 12
-        border = 4
+        width = settings.health_bar_width
+        height = settings.health_bar_height
+        border = settings.health_bar_border
         surface = pygame.Surface((2 * width + 2 * border, height + 2 * border))
         # Border rectangle
         rect = pygame.Rect(0, 0, width + 2 * border, height + 2 * border)
@@ -36,4 +35,16 @@ class Screen(object):
         self.surface.blit(surface, (0, 20))
 
     def draw_entity(self, entity):
-        self.surface.blit(entity.image, (entity.x, entity.y))
+        self.surface.blit(entity.image, (entity.rectangle.x, entity.rectangle.y))
+
+    def draw_building(self, building):
+        width = building.rectangle.width
+        height = building.rectangle.height
+        surface = pygame.Surface((width, height))
+        for h in range(height):
+            for w in range(width):
+                if building.grid[h][w] == 1:
+                    rect = pygame.Rect(w, h, 1, 1)
+                    pygame.draw.rect(surface, settings.blue, rect)
+
+        self.surface.blit(surface, (building.rectangle.x, building.rectangle.y))
