@@ -3,7 +3,6 @@ import pygame
 import SpyceInvaders.settings as settings
 from SpyceInvaders.alien_group import AlienGroup
 from SpyceInvaders.building import Building
-from SpyceInvaders.bullet import Bullet
 from SpyceInvaders.player import Player
 from SpyceInvaders.screen import Screen
 
@@ -77,7 +76,7 @@ class Game(object):
         for bullet in bullets:
             for target in targets:
                 if bullet.is_collided_with(target):
-                    target.receive_damage(bullet.type, bullet.rectangle.x, bullet.direction)
+                    target.receive_damage(bullet)
                     if not target.is_alive():
                         if isinstance(target, Player):
                             self.player_died = True
