@@ -13,11 +13,26 @@ class Screen(object):
         self.surface = pygame.display.set_mode((self.width, self.height))
         self.background = pygame.Surface(self.surface.get_size()).convert()
         self.background.fill(settings.black)
-        self.font = pygame.font.SysFont("mono", 16)
+        self.font_small = pygame.font.SysFont("mono", 16)
+        self.font_big = pygame.font.SysFont("mono", 32)
 
-    def draw_text(self, text):
-        surface = self.font.render(text, True, settings.white)
-        self.surface.blit(surface, (0, 0))
+    def update_surface(self):
+        pygame.display.flip()
+        self.surface.blit(self.background, (0, 0))
+
+    def draw_text(self, text, x=0, y=0):
+        surface = self.font_small.render(text, True, settings.white)
+        self.surface.blit(surface, (x, y))
+
+    def draw_center_text(self, text):
+        lines = text.split("\n")
+        for i in range(len(lines)):
+            surface = self.font_big.render(lines[i], True, settings.white)
+            line_width, line_height = self.font_big.size(lines[i])
+            self.surface.blit(surface, (
+                (settings.screen_width - line_width) // 2,
+                (settings.screen_height // 2) + (1.5 * line_height * (i - (len(lines) // 2)))
+            ))
 
     def draw_health_bar(self, percent):
         width = settings.health_bar_width

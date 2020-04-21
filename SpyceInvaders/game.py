@@ -43,7 +43,7 @@ class Game(object):
             self.draw_all_actors()
 
         if self.player_lost:
-            self.count_quit()
+            self.game_over_screen()
         pygame.quit()
 
     def handle_events(self):
@@ -77,7 +77,6 @@ class Game(object):
                 if self.is_collision_detected(bullet, building):
                     building.receive_damage(bullet)
                     self.player_bullets.remove(bullet)
-
         for bullet in self.alien_bullets:
             if self.is_collision_detected(bullet, self.player):
                 self.player.receive_damage(bullet)
@@ -95,7 +94,6 @@ class Game(object):
         for building in self.building_list:
             for alien in self.alien_group.aliens:
                 if self.is_collision_detected(alien, building):
-                    print("Alien v building collision. Game over")
                     self.running = False
                     self.player_lost = True
 
@@ -124,17 +122,11 @@ class Game(object):
             self.screen.draw_entity(bullet)
         for bullet in self.alien_bullets:
             self.screen.draw_entity(bullet)
+        self.screen.update_surface()
 
-        pygame.display.flip()
-        self.screen.surface.blit(self.screen.background, (0, 0))
-
-    def count_quit(self, text="You died!", time=3):
-        self.screen.background.fill(settings.black)
-        pygame.display.flip()
-        self.screen.surface.blit(self.screen.background, (0, 0))
-        print(text)
-        print("Quiting in")
-        for i in range(time, 0, -1):
-            print(i)
+    def game_over_screen(self, time=3):
+        self.screen.draw_center_text("GAME OVER")
+        self.screen.update_surface()
+        for _ in range(time):
             pygame.time.wait(1000)
         pygame.quit()
