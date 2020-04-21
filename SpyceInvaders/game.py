@@ -26,7 +26,7 @@ class Game(object):
         self.alien_bullets = []
 
         self.running = True
-        self.player_died = False
+        self.player_lost = False
 
     def run(self):
         while self.running:
@@ -42,7 +42,7 @@ class Game(object):
             self.detect_all_collisions()
             self.draw_all_actors()
 
-        if self.player_died:
+        if self.player_lost:
             self.count_quit()
         pygame.quit()
 
@@ -83,7 +83,7 @@ class Game(object):
                 self.player.receive_damage(bullet)
                 self.alien_bullets.remove(bullet)
                 if not self.player.is_alive():
-                    self.player_died = True
+                    self.player_lost = True
                     self.running = False
 
         for bullet in self.alien_bullets:
@@ -91,6 +91,13 @@ class Game(object):
                 if self.is_collision_detected(bullet, building):
                     building.receive_damage(bullet)
                     self.alien_bullets.remove(bullet)
+
+        for building in self.building_list:
+            for alien in self.alien_group.aliens:
+                if self.is_collision_detected(alien, building):
+                    print("Alien v building collision. Game over")
+                    self.running = False
+                    self.player_lost = True
 
     def is_collision_detected(self, source, target):
         if source.is_collided_with(target):

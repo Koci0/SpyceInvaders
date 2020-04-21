@@ -32,6 +32,8 @@ class AlienGroup(object):
 
         if swap:
             self.swap_direction()
+            for alien in self.aliens:
+                alien.move("down", steps=3)
 
         return self.shoot()
 
