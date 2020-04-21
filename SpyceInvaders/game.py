@@ -3,7 +3,6 @@ import pygame
 import SpyceInvaders.settings as settings
 from SpyceInvaders.alien_group import AlienGroup
 from SpyceInvaders.building import Building
-from SpyceInvaders.bullet import Bullet
 from SpyceInvaders.player import Player
 from SpyceInvaders.screen import Screen
 
@@ -61,31 +60,41 @@ class Game(object):
         elif keys[pygame.K_d]:
             self.player.move("right")
         if keys[pygame.K_SPACE]:
-            self.player_bullets.append(
-                Bullet(self.player.rectangle.x + self.player.rectangle.width // 2,
-                       self.player.rectangle.y, "up", "normal"))
+            bullet = self.player.shoot("up")
+            if bullet:
+                self.player_bullets.append(bullet)
 
     def detect_all_collisions(self):
-        removed = self.detect_collision(self.alien_group.aliens, self.player_bullets)
-        if removed is not None:
-            self.alien_group.increase_difficulty()
-        self.detect_collision(self.building_list, self.player_bullets)
-        self.detect_collision([self.player], self.alien_bullets)
-        self.detect_collision(self.building_list, self.alien_bullets)
+        for bullet in self.player_bullets:
+            for alien in self.alien_group.aliens:
+                if self.is_collision_detected(bullet, alien):
+                    self.alien_group.remove(alien)
+                    self.player_bullets.remove(bullet)
+                    self.alien_group.increase_difficulty()
 
-    def detect_collision(self, targets, bullets):
-        for bullet in bullets:
-            for target in targets:
-                if bullet.is_collided_with(target):
-                    target.receive_damage(bullet.type, bullet.rectangle.x, bullet.direction)
-                    if not target.is_alive():
-                        if isinstance(target, Player):
-                            self.player_died = True
-                            self.running = False
-                        else:
-                            targets.remove(target)
-                            return target
-                    bullets.remove(bullet)
+        for bullet in self.player_bullets:
+            for building in self.building_list:
+                if self.is_collision_detected(bullet, building):
+                    building.receive_damage(bullet)
+                    self.player_bullets.remove(bullet)
+
+        for bullet in self.alien_bullets:
+            if self.is_collision_detected(bullet, self.player):
+                self.player.receive_damage(bullet)
+                self.alien_bullets.remove(bullet)
+                if not self.player.is_alive():
+                    self.player_died = True
+                    self.running = False
+
+        for bullet in self.alien_bullets:
+            for building in self.building_list:
+                if self.is_collision_detected(bullet, building):
+                    building.receive_damage(bullet)
+                    self.alien_bullets.remove(bullet)
+
+    def is_collision_detected(self, source, target):
+        if source.is_collided_with(target):
+            return target
         return None
 
     def move_all_bullets(self):
