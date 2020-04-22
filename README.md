@@ -13,7 +13,7 @@ Project that aims to create a Space Invaders like game in Python using Pygame, t
 - [X] Aliens move
 - [X] Aliens die
 - [X] Aliens shoot
-- [ ] Proper 'Game Over' conditions
+- [X] Proper 'Game Over' conditions
 - [ ] Leaderboard 
 
 ### Additional project goals
