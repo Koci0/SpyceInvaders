@@ -7,6 +7,12 @@ from SpyceInvaders.player import Player
 from SpyceInvaders.screen import Screen
 
 
+def is_collision_detected(source, target):
+    if source.is_collided_with(target):
+        return target
+    return None
+
+
 class Game(object):
 
     def __init__(self, width=settings.screen_width, height=settings.screen_height, fps=60):
@@ -27,6 +33,7 @@ class Game(object):
 
         self.running = True
         self.player_lost = False
+        self.player_won = False
 
     def run(self):
         while self.running:
@@ -40,10 +47,13 @@ class Game(object):
 
             self.move_all_bullets()
             self.detect_all_collisions()
+            self.check_game_over_conditions()
             self.draw_all_actors()
 
         if self.player_lost:
-            self.game_over_screen()
+            self.game_over_screen("GAME OVER")
+        elif self.player_won:
+            self.game_over_screen("YOU WON")
         pygame.quit()
 
     def handle_events(self):
@@ -64,43 +74,45 @@ class Game(object):
             if bullet:
                 self.player_bullets.append(bullet)
 
+    def check_game_over_conditions(self):
+        if len(self.alien_group.aliens) == 0:
+            self.player_won = True
+            self.running = False
+            return
+        if not self.player.is_alive():
+            self.player_lost = True
+            self.running = False
+            return
+        for building in self.building_list:
+            for alien in self.alien_group.aliens:
+                if is_collision_detected(alien, building):
+                    self.running = False
+                    self.player_lost = True
+                    return
+
     def detect_all_collisions(self):
         for bullet in self.player_bullets:
             for alien in self.alien_group.aliens:
-                if self.is_collision_detected(bullet, alien):
+                if is_collision_detected(bullet, alien):
                     self.alien_group.remove(alien)
                     self.player_bullets.remove(bullet)
                     self.alien_group.increase_difficulty()
 
         for bullet in self.player_bullets:
             for building in self.building_list:
-                if self.is_collision_detected(bullet, building):
+                if is_collision_detected(bullet, building):
                     building.receive_damage(bullet)
                     self.player_bullets.remove(bullet)
         for bullet in self.alien_bullets:
-            if self.is_collision_detected(bullet, self.player):
+            if is_collision_detected(bullet, self.player):
                 self.player.receive_damage(bullet)
                 self.alien_bullets.remove(bullet)
-                if not self.player.is_alive():
-                    self.player_lost = True
-                    self.running = False
 
         for bullet in self.alien_bullets:
             for building in self.building_list:
-                if self.is_collision_detected(bullet, building):
+                if is_collision_detected(bullet, building):
                     building.receive_damage(bullet)
                     self.alien_bullets.remove(bullet)
-
-        for building in self.building_list:
-            for alien in self.alien_group.aliens:
-                if self.is_collision_detected(alien, building):
-                    self.running = False
-                    self.player_lost = True
-
-    def is_collision_detected(self, source, target):
-        if source.is_collided_with(target):
-            return target
-        return None
 
     def move_all_bullets(self):
         for bullet in self.player_bullets:
@@ -124,8 +136,8 @@ class Game(object):
             self.screen.draw_entity(bullet)
         self.screen.update_surface()
 
-    def game_over_screen(self, time=3):
-        self.screen.draw_center_text("GAME OVER")
+    def game_over_screen(self, text, time=3):
+        self.screen.draw_center_text(text)
         self.screen.update_surface()
         for _ in range(time):
             pygame.time.wait(1000)
