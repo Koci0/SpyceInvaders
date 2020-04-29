@@ -1,10 +1,14 @@
-import pygame
+import os.path
+
+import pygame.image
+
+from SpyceInvaders import settings
 
 
-class Actor(object):
+class Actor:
 
-    def __init__(self, name, x, y, destructible=False, hp=None):
-        self.image = pygame.image.load("data/" + str(name) + ".png").convert_alpha()
+    def __init__(self, filename, x, y, destructible=False, hp=None):
+        self.image = pygame.image.load(os.path.join(settings.DATA_PATH, filename)).convert_alpha()
         self.rectangle = self.image.get_rect()
         self.rectangle.x = x
         self.rectangle.y = y

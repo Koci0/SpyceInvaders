@@ -1,4 +1,9 @@
+import pygame
+
 from SpyceInvaders.game import Game
 
 if __name__ == '__main__':
-    Game().run()
+    pygame.init()
+    game = Game()
+    game.run()
+    pygame.quit()
