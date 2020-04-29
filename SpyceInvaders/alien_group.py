@@ -1,15 +1,15 @@
-from random import randint
+import random
 
-from pygame.time import get_ticks
+import pygame.time
 
-import SpyceInvaders.settings as settings
+from SpyceInvaders import settings
 from SpyceInvaders.alien import Alien
 
 
-class AlienGroup(object):
+class AlienGroup:
 
-    def __init__(self, direction="left", rows=settings.alien_group_rows, columns=settings.alien_group_columns):
-        spacing = settings.alien_group_spacing * settings.screen_width // (columns - 1)
+    def __init__(self, direction=settings.LEFT, rows=settings.ALIEN_GROUP_ROWS, columns=settings.ALIEN_GROUP_COLUMNS):
+        spacing = settings.ALIEN_GROUP_SPACING * settings.SCREEN_WIDTH // (columns - 1)
         self.rows = rows
         self.columns = columns
         self.aliens = []
@@ -17,8 +17,8 @@ class AlienGroup(object):
             for j in range(self.columns):
                 self.aliens.append(
                     Alien((j + 1) * spacing, (i + 1) * spacing))
-        self.cooldown = settings.alien_group_cooldown
-        self.last_shot = get_ticks()
+        self.cooldown = settings.ALIEN_GROUP_COOLDOWN
+        self.last_shot = pygame.time.get_ticks()
         self.direction = direction
 
     def tick(self):
@@ -33,7 +33,7 @@ class AlienGroup(object):
         if swap:
             self.swap_direction()
             for alien in self.aliens:
-                alien.move("down", steps=3)
+                alien.move(settings.DOWN, steps=3)
 
         return self.shoot()
 
@@ -41,14 +41,13 @@ class AlienGroup(object):
         for alien in self.aliens:
             alien.swap_direction()
 
-    def shoot(self, direction="down", bullet_type="explosive"):
-        now = get_ticks()
+    def shoot(self, direction=settings.DOWN, bullet_type="explosive"):
+        now = pygame.time.get_ticks()
         if now - self.last_shot >= self.cooldown:
             self.last_shot = now
             if len(self.aliens) > 0:
-                shooter = self.aliens[randint(0, len(self.aliens) - 1)]
+                shooter = self.aliens[random.randint(0, len(self.aliens) - 1)]
                 return shooter.spawn_bullet(direction, bullet_type)
-        return None
 
     def remove(self, alien):
         self.aliens.remove(alien)
@@ -56,5 +55,5 @@ class AlienGroup(object):
 
     def increase_difficulty(self):
         for alien in self.aliens:
-            alien.speed += settings.difficulty_speed
-        self.cooldown -= settings.difficulty_cooldown
+            alien.speed += settings.DIFFICULTY_SPEED
+        self.cooldown -= settings.DIFFICULTY_COOLDOWN

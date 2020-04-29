@@ -1,28 +1,32 @@
-black = (0, 0, 0)
-white = (255, 255, 255)
-red = (255, 0, 0)
-green = (0, 255, 0)
-blue = (0, 0, 255)
+DATA_PATH = './data'
 
-screen_width = 600
-screen_height = 600
+BACKGROUND_COLOR = (0, 0, 0)
+BUILDING_COLOR = (0, 0, 255)
+HEALTH_BAR_COLOR = (255, 0, 0)
+TEXT_COLOR = (255, 255, 255)
+SURFACE_COLOR = (0, 0, 0)
 
-health_bar_width = 100
-health_bar_height = 12
-health_bar_border = 4
+SCREEN_WIDTH = 600
+SCREEN_HEIGHT = 600
 
-player_hp = 100
+HEALTH_BAR_WIDTH = 100
+HEALTH_BAR_HEIGHT = 12
+HEALTH_BAR_BORDER = 4
 
-alien_hp = 1
-alien_speed = 0.5
-alien_group_rows = 5
-alien_group_columns = 11
-alien_group_spacing = 0.75
-alien_group_cooldown = 800
+PLAYER_HP = 100
 
-bullet_speed = 5
-bullet_damage = 10
-explosion_radius = 5
+ALIEN_HP = 1
+ALIEN_SPEED = 0.5
+ALIEN_GROUP_ROWS = 5
+ALIEN_GROUP_COLUMNS = 11
+ALIEN_GROUP_SPACING = 0.75
+ALIEN_GROUP_COOLDOWN = 800
 
-difficulty_speed = 0.02
-difficulty_cooldown = 3
+BULLET_SPEED = 5
+BULLET_DAMAGE = 10
+EXPLOSION_RADIUS = 5
+
+DIFFICULTY_SPEED = 0.02
+DIFFICULTY_COOLDOWN = 3
+
+UP, DOWN, LEFT, RIGHT = range(4)

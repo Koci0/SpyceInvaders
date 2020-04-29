@@ -1,6 +1,6 @@
 import pygame
 
-import SpyceInvaders.settings as settings
+from SpyceInvaders import settings
 from SpyceInvaders.alien_group import AlienGroup
 from SpyceInvaders.building import Building
 from SpyceInvaders.player import Player
@@ -13,9 +13,9 @@ def is_collision_detected(source, target):
     return None
 
 
-class Game(object):
+class Game:
 
-    def __init__(self, width=settings.screen_width, height=settings.screen_height, fps=60):
+    def __init__(self, width=settings.SCREEN_WIDTH, height=settings.SCREEN_HEIGHT, fps=60):
         self.screen = Screen(width, height)
         self.clock = pygame.time.Clock()
         self.fps = fps
@@ -54,7 +54,6 @@ class Game(object):
             self.game_over_screen("GAME OVER")
         elif self.player_won:
             self.game_over_screen("YOU WON")
-        pygame.quit()
 
     def handle_events(self):
         for event in pygame.event.get():
@@ -66,16 +65,16 @@ class Game(object):
 
         keys = pygame.key.get_pressed()
         if keys[pygame.K_a]:
-            self.player.move("left")
+            self.player.move(settings.LEFT)
         elif keys[pygame.K_d]:
-            self.player.move("right")
+            self.player.move(settings.RIGHT)
         if keys[pygame.K_SPACE]:
-            bullet = self.player.shoot("up")
+            bullet = self.player.shoot(settings.UP)
             if bullet:
                 self.player_bullets.append(bullet)
 
     def check_game_over_conditions(self):
-        if len(self.alien_group.aliens) == 0:
+        if not self.alien_group.aliens:
             self.player_won = True
             self.running = False
             return
@@ -141,4 +140,3 @@ class Game(object):
         self.screen.update_surface()
         for _ in range(time):
             pygame.time.wait(1000)
-        pygame.quit()
