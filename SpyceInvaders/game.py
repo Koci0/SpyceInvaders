@@ -3,6 +3,7 @@ import pygame
 from SpyceInvaders import settings
 from SpyceInvaders.alien_group import AlienGroup
 from SpyceInvaders.building import Building
+from SpyceInvaders.leaderboard import Leaderboard
 from SpyceInvaders.player import Player
 from SpyceInvaders.screen import Screen
 
@@ -11,6 +12,14 @@ def is_collision_detected(source, target):
     if source.is_collided_with(target):
         return target
     return None
+
+
+def handle_wait():
+    done = False
+    while not done:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT or event.type == pygame.KEYDOWN:
+                done = True
 
 
 class Game:
@@ -35,6 +44,10 @@ class Game:
         self.player_lost = False
         self.player_won = False
 
+        self.name = ""
+        self.score = 0
+        self.leaderboard = Leaderboard()
+
     def run(self):
         while self.running:
             self.handle_events()
@@ -50,11 +63,15 @@ class Game:
             self.check_game_over_conditions()
             self.draw_all_actors()
 
-        if self.player_lost:
-            self.game_over_screen("GAME OVER")
-        elif self.player_won:
-            self.game_over_screen("YOU WON")
-        self.show_name_input()
+        if self.player_lost or self.player_won:
+            if self.player_lost:
+                self.game_over_screen("GAME OVER")
+            elif self.player_won:
+                self.game_over_screen("YOU WON")
+            self.show_name_input()
+            self.show_player_score()
+            self.leaderboard.write_to_file(self.name, self.score)
+            self.show_leaderboard()
 
     def handle_events(self):
         for event in pygame.event.get():
@@ -145,15 +162,15 @@ class Game:
             self.screen.draw_entity(bullet)
         self.screen.update_surface()
 
-    def game_over_screen(self, text, time=3):
+    def game_over_screen(self, text):
+        text += "\n\nPress any key"
         self.screen.draw_center_text(text)
         self.screen.update_surface()
-        for _ in range(time):
-            pygame.time.wait(1000)
+
+        handle_wait()
 
     def show_name_input(self):
         done = False
-        name = ""
         while not done:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -162,12 +179,30 @@ class Game:
                     if event.key == pygame.K_ESCAPE:
                         done = True
                     elif event.key == pygame.K_RETURN:
-                        print(name)
                         done = True
                     elif event.key == pygame.K_BACKSPACE:
-                        name = name[:-1]
-                    elif len(name) < settings.NAME_LENGTH:
-                        name += event.unicode
-            text = "Enter your name:\n{}".format(name)
+                        self.name = self.name[:-1]
+                    elif len(self.name) < settings.NAME_LENGTH:
+                        self.name += event.unicode
+            text = "Enter your name:\n{}".format(self.name)
             self.screen.draw_center_text(text)
             self.screen.update_surface()
+
+    def show_player_score(self):
+        text = "Your score:\n{} {}\n\nPress any key".format(self.name, str(self.score))
+
+        self.screen.draw_center_text(text)
+        self.screen.update_surface()
+
+        handle_wait()
+
+    def show_leaderboard(self):
+        text = "Leaderboard\n"
+        for line in self.leaderboard.read_from_file():
+            text += line
+        text += "\nPress any key"
+
+        self.screen.draw_center_text(text)
+        self.screen.update_surface()
+
+        handle_wait()
