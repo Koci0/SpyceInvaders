@@ -78,6 +78,10 @@ class Game:
             self.player_won = True
             self.running = False
             return
+        if not self.building_list:
+            self.player_lost = True
+            self.running = False
+            return
         if not self.player.is_alive():
             self.player_lost = True
             self.running = False
@@ -100,17 +104,22 @@ class Game:
         for bullet in self.player_bullets:
             for building in self.building_list:
                 if is_collision_detected(bullet, building):
-                    building.receive_damage(bullet)
+                    building.receive_damage()
+                    print("building got damage")
                     self.player_bullets.remove(bullet)
+                    if not building.is_alive():
+                        self.building_list.remove(building)
+
         for bullet in self.alien_bullets:
             if is_collision_detected(bullet, self.player):
-                self.player.receive_damage(bullet)
+                self.player.receive_damage()
                 self.alien_bullets.remove(bullet)
 
         for bullet in self.alien_bullets:
             for building in self.building_list:
                 if is_collision_detected(bullet, building):
-                    building.receive_damage(bullet)
+                    building.receive_damage()
+                    print("building got damage")
                     self.alien_bullets.remove(bullet)
 
     def move_all_bullets(self):
@@ -126,7 +135,7 @@ class Game:
         self.screen.draw_health_bar(self.player.hp)
         self.screen.draw_entity(self.player)
         for building in self.building_list:
-            self.screen.draw_building(building)
+            self.screen.draw_entity(building)
         for alien in self.alien_group.aliens:
             self.screen.draw_entity(alien)
         for bullet in self.player_bullets:

@@ -22,3 +22,7 @@ class Actor:
 
     def is_collided_with(self, actor):
         return self.rectangle.colliderect(actor.rectangle)
+
+    def receive_damage(self):
+        if self.destructible and self.hp is not None:
+            self.hp = self.hp - settings.BULLET_DAMAGE
