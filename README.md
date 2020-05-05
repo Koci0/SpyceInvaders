@@ -28,11 +28,11 @@ Project is based on Python 3 and Pygame module.
 
 ## Getting Started
 
-It is recommended to use *pipenv* and included Pipfile. First, create new virtual environment for Python 3.7.7, then install dependencies from Pipfile.
+It is recommended to use `pip` and included `requirements.txt` file.
+Developed with `Python 3.8.2`.
 
 ```
-pipenv --python 3.7
-pipenv install
+pip install -r requirements.txt --user
 ```
 
 ## Authors
