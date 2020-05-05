@@ -54,6 +54,7 @@ class Game:
             self.game_over_screen("GAME OVER")
         elif self.player_won:
             self.game_over_screen("YOU WON")
+        self.show_name_input()
 
     def handle_events(self):
         for event in pygame.event.get():
@@ -149,3 +150,24 @@ class Game:
         self.screen.update_surface()
         for _ in range(time):
             pygame.time.wait(1000)
+
+    def show_name_input(self):
+        done = False
+        name = ""
+        while not done:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    return
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        done = True
+                    elif event.key == pygame.K_RETURN:
+                        print(name)
+                        done = True
+                    elif event.key == pygame.K_BACKSPACE:
+                        name = name[:-1]
+                    elif len(name) < settings.NAME_LENGTH:
+                        name += event.unicode
+            text = "Enter your name:\n{}".format(name)
+            self.screen.draw_center_text(text)
+            self.screen.update_surface()
