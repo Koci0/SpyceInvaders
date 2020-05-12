@@ -150,6 +150,7 @@ class Game:
 
     def draw_all_actors(self):
         self.screen.draw_text("FPS: {:.0f}".format(self.clock.get_fps()))
+        self.screen.draw_text("Score: {}".format(self.score), y=15)
         self.screen.draw_health_bar(self.player.hp)
         self.screen.draw_entity(self.player)
         for building in self.building_list:

@@ -47,7 +47,7 @@ class Screen:
             rect = pygame.Rect(border + width, border, -(width - percent), height)
             pygame.draw.rect(surface, settings.BACKGROUND_COLOR, rect)
 
-        self.surface.blit(surface, (0, 20))
+        self.surface.blit(surface, (settings.SCREEN_WIDTH - (settings.HEALTH_BAR_WIDTH + 3*settings.HEALTH_BAR_BORDER), 0 + settings.HEALTH_BAR_BORDER))
 
     def draw_entity(self, entity):
         self.surface.blit(entity.image, (entity.rectangle.x, entity.rectangle.y))
