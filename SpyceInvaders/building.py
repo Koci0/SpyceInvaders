@@ -8,6 +8,7 @@ class Building(Actor):
         super().__init__(filename, x, y)
         self.destructible = True
         self.hp = settings.BUILDING_HP
+        self.score = settings.BUILDING_SCORE
 
     def receive_damage(self):
         if self.destructible and self.hp is not None:

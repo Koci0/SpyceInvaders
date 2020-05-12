@@ -11,6 +11,7 @@ class Alien(Entity):
         self.hp = settings.ALIEN_HP
         self.speed = 1.0
         self.direction = direction
+        self.score = settings.ALIEN_SCORE
 
     def tick(self):
         if self.move(self.direction):

@@ -117,14 +117,15 @@ class Game:
                 if is_collision_detected(bullet, alien):
                     self.alien_group.remove(alien)
                     self.player_bullets.remove(bullet)
+                    self.score += alien.score
                     self.alien_group.increase_difficulty()
 
         for bullet in self.player_bullets:
             for building in self.building_list:
                 if is_collision_detected(bullet, building):
                     building.receive_damage()
-                    print("building got damage")
                     self.player_bullets.remove(bullet)
+                    self.score -= building.score
                     if not building.is_alive():
                         self.building_list.remove(building)
 
@@ -137,7 +138,6 @@ class Game:
             for building in self.building_list:
                 if is_collision_detected(bullet, building):
                     building.receive_damage()
-                    print("building got damage")
                     self.alien_bullets.remove(bullet)
 
     def move_all_bullets(self):
