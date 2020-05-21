@@ -1,20 +1,25 @@
+"""Defines in-game logic and mechanics."""
+
 import pygame
 
-from SpyceInvaders import settings
-from SpyceInvaders.alien_group import AlienGroup
-from SpyceInvaders.building import Building
-from SpyceInvaders.leaderboard import Leaderboard
-from SpyceInvaders.player import Player
-from SpyceInvaders.screen import Screen
+from spyce_invaders import settings
+from spyce_invaders.alien_group import AlienGroup
+from spyce_invaders.building import Building
+from spyce_invaders.leaderboard import Leaderboard
+from spyce_invaders.player import Player
+from spyce_invaders.screen import Screen
 
 
 def is_collision_detected(source, target):
+    """Detects if given source is collided with target.
+    Returns target object if true, None otherwise."""
     if source.is_collided_with(target):
         return target
     return None
 
 
 def handle_wait():
+    """Waits for player to press any key or close window."""
     done = False
     while not done:
         for event in pygame.event.get():
@@ -23,6 +28,7 @@ def handle_wait():
 
 
 class Game:
+    """Creates screen object, starts clock, defines all actors and opens leaderboard."""
 
     def __init__(self, width=settings.SCREEN_WIDTH, height=settings.SCREEN_HEIGHT, fps=60):
         self.screen = Screen(width, height)
@@ -49,6 +55,9 @@ class Game:
         self.leaderboard = Leaderboard()
 
     def run(self):
+        """Runs the main game loop. Handles game events, moves bullets, detects collisions,
+        checks main conditions and draws actors. When game is over, prompts player to input name,
+        adds them to the leaderboard and prints it."""
         while self.running:
             self.handle_events()
             self.clock.tick(self.fps)
@@ -74,6 +83,8 @@ class Game:
             self.show_leaderboard()
 
     def handle_events(self):
+        """Handles closing window via X on window bar or escape key.
+        Then checks if player should move or shoot."""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
@@ -92,6 +103,8 @@ class Game:
                 self.player_bullets.append(bullet)
 
     def check_game_over_conditions(self):
+        """Checks if all aliens are dead, if all buildings are destroyed or
+        if aliens touched the building."""
         if not self.alien_group.aliens:
             self.player_won = True
             self.running = False
@@ -112,6 +125,8 @@ class Game:
                     return
 
     def detect_all_collisions(self):
+        """Checks if player bullets touched aliens or buildings and
+        if alien bullets touched player or buildings."""
         for bullet in self.player_bullets:
             for alien in self.alien_group.aliens:
                 if is_collision_detected(bullet, alien):
@@ -141,6 +156,8 @@ class Game:
                     self.alien_bullets.remove(bullet)
 
     def move_all_bullets(self):
+        """Moves all bullets. If tick returns True, then bullet is out of screen
+        and removes it from list."""
         for bullet in self.player_bullets:
             if bullet.tick():
                 self.player_bullets.remove(bullet)
@@ -149,9 +166,10 @@ class Game:
                 self.alien_bullets.remove(bullet)
 
     def draw_all_actors(self):
+        """Draws FPS text, score, health bar and all actors on screen."""
         self.screen.draw_text("FPS: {:.0f}".format(self.clock.get_fps()))
-        self.screen.draw_text("Score: {}".format(self.score), y=15)
-        self.screen.draw_health_bar(self.player.hp)
+        self.screen.draw_text("Score: {}".format(self.score), y_coordinate=15)
+        self.screen.draw_health_bar(self.player.health_points)
         self.screen.draw_entity(self.player)
         for building in self.building_list:
             self.screen.draw_entity(building)
@@ -164,19 +182,21 @@ class Game:
         self.screen.update_surface()
 
     def game_over_screen(self, text):
-        text += "\n\nPress any key"
+        """Draws given text in centered text with prompt to press any key, then waits."""
+        text.join("\n\nPress any key")
         self.screen.draw_center_text(text)
         self.screen.update_surface()
 
         handle_wait()
 
     def show_name_input(self):
+        """Handles input of player name. Draws prompt and current input in centered text."""
         done = False
         while not done:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     return
-                elif event.type == pygame.KEYDOWN:
+                if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         done = True
                     elif event.key == pygame.K_RETURN:
@@ -190,6 +210,7 @@ class Game:
             self.screen.update_surface()
 
     def show_player_score(self):
+        """Shows player score with prompt to press any key."""
         text = "Your score:\n{} {}\n\nPress any key".format(self.name, str(self.score))
 
         self.screen.draw_center_text(text)
@@ -198,10 +219,11 @@ class Game:
         handle_wait()
 
     def show_leaderboard(self):
+        """Shows leaderboard in centered text."""
         text = "Leaderboard\n"
         for line in self.leaderboard.read_from_file():
-            text += line
-        text += "\nPress any key"
+            text.join(line)
+        text.join("\nPress any key")
 
         self.screen.draw_center_text(text)
         self.screen.update_surface()

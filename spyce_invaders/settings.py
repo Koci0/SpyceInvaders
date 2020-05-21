@@ -1,10 +1,19 @@
+"""Defines global parameters for application."""
+
 DATA_PATH = './data'
 
-BACKGROUND_COLOR = (0, 0, 0)
-BUILDING_COLOR = (0, 0, 255)
-HEALTH_BAR_COLOR = (255, 0, 0)
-TEXT_COLOR = (255, 255, 255)
-SURFACE_COLOR = (0, 0, 0)
+COLORS = {
+    "red": (255, 0, 0),
+    "green": (0, 255, 0),
+    "blue": (0, 0, 255),
+    "white": (255, 255, 255),
+    "black": (0, 0, 0)
+}
+
+BACKGROUND_COLOR = COLORS["black"]
+HEALTH_BAR_COLOR = COLORS["red"]
+TEXT_COLOR = COLORS["white"]
+SURFACE_COLOR = COLORS["black"]
 
 SCREEN_WIDTH = 600
 SCREEN_HEIGHT = 600
