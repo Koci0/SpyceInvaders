@@ -29,35 +29,62 @@ def handle_wait():
 
 class Game:
     """Creates screen object, starts clock, defines all actors and opens leaderboard."""
+    width = settings.SCREEN_WIDTH
+    height = settings.SCREEN_HEIGHT
 
-    def __init__(self, width=settings.SCREEN_WIDTH, height=settings.SCREEN_HEIGHT, fps=60):
-        self.screen = Screen(width, height)
+    def __init__(self, fps=60):
+        self.screen = Screen(self.width, self.height)
         self.clock = pygame.time.Clock()
         self.fps = fps
 
-        self.player = Player(x=width // 2, y=height * (7 / 8))
+        self.player = None
         self.player_bullets = []
         self.building_list = [
-            Building(x=(width - 4 * 60) // 5, y=height * (5 / 8)),
-            Building(x=2 * (width - 4 * 60) // 5 + 1 * 60, y=height * (5 / 8)),
-            Building(x=3 * (width - 4 * 60) // 5 + 2 * 60, y=height * (5 / 8)),
-            Building(x=4 * (width - 4 * 60) // 5 + 3 * 60, y=height * (5 / 8))
+            Building(x=(self.width - 4 * 60) // 5, y=self.height * (5 / 8)),
+            Building(x=2 * (self.width - 4 * 60) // 5 + 1 * 60, y=self.height * (5 / 8)),
+            Building(x=3 * (self.width - 4 * 60) // 5 + 2 * 60, y=self.height * (5 / 8)),
+            Building(x=4 * (self.width - 4 * 60) // 5 + 3 * 60, y=self.height * (5 / 8))
         ]
-        self.alien_group = AlienGroup()
+        self.alien_group = None
         self.alien_bullets = []
 
         self.running = True
-        self.player_lost = False
-        self.player_won = False
+        self.next_level = True
+        self.exit = False
 
         self.name = ""
         self.score = 0
         self.leaderboard = Leaderboard()
 
+    def initialize_actors(self):
+        """Initializes all actors in default starting positions."""
+        self.player = Player(x=self.width // 2, y=self.height * (7 / 8))
+        self.player_bullets = []
+        self.alien_group = AlienGroup()
+        self.alien_bullets = []
+
     def run(self):
+        """Runs game. For every level initializes actors and runs main game loop. When game is over,
+        prompts player to input name, adds them to the leaderboard and prints it."""
+        level = 1
+        while self.next_level and not self.exit:
+            self.level_screen("Level {}".format(level))
+            self.initialize_actors()
+            self.alien_group.increase_difficulty(modifier=(level - 1) * 10)
+            self.run_main_loop()
+            level += 1
+
+        if not self.exit:
+            self.game_over_screen("GAME OVER")
+            self.show_name_input()
+            self.show_player_score()
+            self.leaderboard.write_to_file(self.name, self.score)
+            self.show_leaderboard()
+
+    def run_main_loop(self):
         """Runs the main game loop. Handles game events, moves bullets, detects collisions,
-        checks main conditions and draws actors. When game is over, prompts player to input name,
-        adds them to the leaderboard and prints it."""
+        checks main conditions and draws actors. Stops when field running is set to False."""
+        self.running = True
         while self.running:
             self.handle_events()
             self.clock.tick(self.fps)
@@ -72,24 +99,19 @@ class Game:
             self.check_game_over_conditions()
             self.draw_all_actors()
 
-        if self.player_lost or self.player_won:
-            if self.player_lost:
-                self.game_over_screen("GAME OVER")
-            elif self.player_won:
-                self.game_over_screen("YOU WON")
-            self.show_name_input()
-            self.show_player_score()
-            self.leaderboard.write_to_file(self.name, self.score)
-            self.show_leaderboard()
-
     def handle_events(self):
         """Handles closing window via X on window bar or escape key.
         Then checks if player should move or shoot."""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
+                self.exit = True
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
+                    self.running = False
+                    self.exit = True
+                if event.key == pygame.K_n:
+                    self.next_level = True
                     self.running = False
 
         keys = pygame.key.get_pressed()
@@ -106,22 +128,22 @@ class Game:
         """Checks if all aliens are dead, if all buildings are destroyed or
         if aliens touched the building."""
         if not self.alien_group.aliens:
-            self.player_won = True
+            self.next_level = True
             self.running = False
             return
         if not self.building_list:
-            self.player_lost = True
+            self.next_level = False
             self.running = False
             return
         if not self.player.is_alive():
-            self.player_lost = True
+            self.next_level = False
             self.running = False
             return
         for building in self.building_list:
             for alien in self.alien_group.aliens:
                 if is_collision_detected(alien, building):
+                    self.next_level = False
                     self.running = False
-                    self.player_lost = True
                     return
 
     def detect_all_collisions(self):
@@ -180,6 +202,12 @@ class Game:
         for bullet in self.alien_bullets:
             self.screen.draw_entity(bullet)
         self.screen.update_surface()
+
+    def level_screen(self, text, seconds=1):
+        """Draws given text in centered text for certain period of time in seconds."""
+        self.screen.draw_center_text(text)
+        self.screen.update_surface()
+        pygame.time.wait(seconds * 1000)
 
     def game_over_screen(self, text):
         """Draws given text in centered text with prompt to press any key, then waits."""
