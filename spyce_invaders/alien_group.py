@@ -64,8 +64,8 @@ class AlienGroup:
         self.aliens.remove(alien)
         self.increase_difficulty()
 
-    def increase_difficulty(self):
-        """Increases movement speed and decreases shooting cooldown."""
+    def increase_difficulty(self, modifier=1):
+        """Increases movement speed and decreases shooting cooldown. Can be multiplied with modifier."""
         for alien in self.aliens:
-            alien.speed += settings.DIFFICULTY_SPEED
-        self.cooldown -= settings.DIFFICULTY_COOLDOWN
+            alien.speed += settings.DIFFICULTY_SPEED * modifier
+        self.cooldown -= settings.DIFFICULTY_COOLDOWN * modifier

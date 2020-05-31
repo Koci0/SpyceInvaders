@@ -39,7 +39,12 @@ class Game:
 
         self.player = None
         self.player_bullets = []
-        self.building_list = []
+        self.building_list = [
+            Building(x=(self.width - 4 * 60) // 5, y=self.height * (5 / 8)),
+            Building(x=2 * (self.width - 4 * 60) // 5 + 1 * 60, y=self.height * (5 / 8)),
+            Building(x=3 * (self.width - 4 * 60) // 5 + 2 * 60, y=self.height * (5 / 8)),
+            Building(x=4 * (self.width - 4 * 60) // 5 + 3 * 60, y=self.height * (5 / 8))
+        ]
         self.alien_group = None
         self.alien_bullets = []
 
@@ -55,12 +60,6 @@ class Game:
         """Initializes all actors in default starting positions."""
         self.player = Player(x=self.width // 2, y=self.height * (7 / 8))
         self.player_bullets = []
-        self.building_list = [
-            Building(x=(self.width - 4 * 60) // 5, y=self.height * (5 / 8)),
-            Building(x=2 * (self.width - 4 * 60) // 5 + 1 * 60, y=self.height * (5 / 8)),
-            Building(x=3 * (self.width - 4 * 60) // 5 + 2 * 60, y=self.height * (5 / 8)),
-            Building(x=4 * (self.width - 4 * 60) // 5 + 3 * 60, y=self.height * (5 / 8))
-        ]
         self.alien_group = AlienGroup()
         self.alien_bullets = []
 
@@ -71,6 +70,7 @@ class Game:
         while self.next_level and not self.exit:
             self.level_screen("Level {}".format(level))
             self.initialize_actors()
+            self.alien_group.increase_difficulty(modifier=(level - 1) * 10)
             self.run_main_loop()
             level += 1
 
