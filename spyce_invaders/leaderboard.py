@@ -1,18 +1,27 @@
+"""Defines Leaderboard class that handles game score."""
+
 import os.path
 
-from SpyceInvaders import settings
+from spyce_invaders import settings
 
 
 class Leaderboard:
+    """Creates filepath to leaderboard in data directory."""
 
     def __init__(self):
         self.file_path = os.path.join(settings.DATA_PATH, "leaderboard")
 
     def read_from_file(self):
-        with open(self.file_path, "r") as file:
+        """Reads all lines from file and returns them."""
+        try:
+            file = open(self.file_path, "r")
             return file.readlines()
+        except FileNotFoundError:
+            return []
 
     def write_to_file(self, name, score):
+        """Appends given name and score. Sorts leaderboard and writes to file.
+        Writes up to the number of entries specified in settings module."""
         board = []
         for line in self.read_from_file():
             tmp = line.split()

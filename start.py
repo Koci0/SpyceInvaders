@@ -1,6 +1,8 @@
+"""Initializes PyGame, runs game and cleans resources."""
+
 import pygame
 
-from SpyceInvaders.game import Game
+from spyce_invaders.game import Game
 
 if __name__ == '__main__':
     pygame.init()
