@@ -1,6 +1,6 @@
 # SpyceInvaders
 
-Project that aims to create a Space Invaders like game in Python using Pygame, thus the name. It is created as a project Symbolic Language course at Cracow University of Technology.
+Project that aims to create a Space Invaders like game in Python using Pygame, thus the name. It is created as a project for Symbolic Languages course at Cracow University of Technology.
 
 ## Main project goals
 
@@ -15,13 +15,7 @@ Project that aims to create a Space Invaders like game in Python using Pygame, t
 - [X] Aliens shoot
 - [X] Proper 'Game Over' conditions
 - [X] Leaderboard 
-- [ ] Infinite levels
-
-### Additional project goals
-
-- [ ] Add different types of bullets and/or weapons
-- [ ] Add different level layouts
-- [ ] Add building upgrades with self-defending mechanisms
+- [X] Infinite levels
 
 ## Prerequisites
 
