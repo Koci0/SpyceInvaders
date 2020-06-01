@@ -13,8 +13,11 @@ class Leaderboard:
 
     def read_from_file(self):
         """Reads all lines from file and returns them."""
-        with open(self.file_path, "r") as file:
+        try:
+            file = open(self.file_path, "r")
             return file.readlines()
+        except FileNotFoundError:
+            return []
 
     def write_to_file(self, name, score):
         """Appends given name and score. Sorts leaderboard and writes to file.

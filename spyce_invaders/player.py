@@ -28,6 +28,5 @@ class Player(Entity):
 
     def spawn_bullet(self, direction):
         """Creates bullet object in player's coordinates and returns it."""
-        bullet = Bullet(self.rectangle.x + 0.5 * self.rectangle.width,
-                        self.rectangle.y, direction, "normal")
+        bullet = Bullet(self.rectangle.x + 0.5 * self.rectangle.width, self.rectangle.y, direction)
         return bullet

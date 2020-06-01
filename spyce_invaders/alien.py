@@ -29,8 +29,7 @@ class Alien(Entity):
         else:
             self.direction = settings.LEFT
 
-    def spawn_bullet(self, direction, bullet_type):
+    def spawn_bullet(self, direction):
         """Creates bullet object in alien's coordinates and returns it."""
-        bullet = Bullet(self.rectangle.x + 0.5 * self.rectangle.width,
-                        self.rectangle.y, direction, bullet_type)
+        bullet = Bullet(self.rectangle.x + 0.5 * self.rectangle.width, self.rectangle.y, direction)
         return bullet

@@ -50,14 +50,15 @@ class AlienGroup:
         for alien in self.aliens:
             alien.swap_direction()
 
-    def shoot(self, direction=settings.DOWN, bullet_type="explosive"):
+    def shoot(self, direction=settings.DOWN):
         """If cooldown allows it, shoots new bullet from random alien in the grid."""
         now = pygame.time.get_ticks()
         if now - self.last_shot >= self.cooldown:
             self.last_shot = now
             if len(self.aliens) > 0:
                 shooter = self.aliens[random.randint(0, len(self.aliens) - 1)]
-                return shooter.spawn_bullet(direction, bullet_type)
+                return shooter.spawn_bullet(direction)
+        return None
 
     def remove(self, alien):
         """Removes alien from the list and increases game difficulty."""
@@ -65,7 +66,8 @@ class AlienGroup:
         self.increase_difficulty()
 
     def increase_difficulty(self, modifier=1):
-        """Increases movement speed and decreases shooting cooldown. Can be multiplied with modifier."""
+        """Increases movement speed and decreases shooting cooldown.
+        Can be multiplied with modifier."""
         for alien in self.aliens:
             alien.speed += settings.DIFFICULTY_SPEED * modifier
         self.cooldown -= settings.DIFFICULTY_COOLDOWN * modifier

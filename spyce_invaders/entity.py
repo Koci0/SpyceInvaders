@@ -7,10 +7,10 @@ from spyce_invaders.actor import Actor
 class Entity(Actor):
     """Creates entity with speed and cooldown attributes."""
 
-    def __init__(self, name, x, y, speed=0, cooldown=0):
+    def __init__(self, name, x, y):
         super().__init__(name, x, y)
-        self.speed = speed
-        self.cooldown = cooldown
+        self.speed = 0
+        self.cooldown = 0
 
     def move(self, direction, steps=1):
         """Moves entity in given direction by given steps, after checking coordinate boundaries.

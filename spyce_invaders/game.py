@@ -211,7 +211,7 @@ class Game:
 
     def game_over_screen(self, text):
         """Draws given text in centered text with prompt to press any key, then waits."""
-        text.join("\n\nPress any key")
+        text += "\n\nPress any key"
         self.screen.draw_center_text(text)
         self.screen.update_surface()
 
@@ -249,9 +249,8 @@ class Game:
     def show_leaderboard(self):
         """Shows leaderboard in centered text."""
         text = "Leaderboard\n"
-        for line in self.leaderboard.read_from_file():
-            text.join(line)
-        text.join("\nPress any key")
+        text += "".join(self.leaderboard.read_from_file())
+        text += "\nPress any key"
 
         self.screen.draw_center_text(text)
         self.screen.update_surface()
