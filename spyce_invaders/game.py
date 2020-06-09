@@ -67,6 +67,7 @@ class Game:
         """Runs game. For every level initializes actors and runs main game loop. When game is over,
         prompts player to input name, adds them to the leaderboard and prints it."""
         level = 1
+        self.next_level = False
         while self.next_level and not self.exit:
             self.level_screen("Level {}".format(level))
             self.initialize_actors()
@@ -228,7 +229,10 @@ class Game:
                     if event.key == pygame.K_ESCAPE:
                         done = True
                     elif event.key == pygame.K_RETURN:
-                        done = True
+                        if not self.name:
+                            self.level_screen("Cannot enter empty name!")
+                        else:
+                            done = True
                     elif event.key == pygame.K_BACKSPACE:
                         self.name = self.name[:-1]
                     elif len(self.name) < settings.NAME_LENGTH:
