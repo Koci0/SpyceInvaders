@@ -18,10 +18,19 @@ class Entity(Actor):
         if direction == settings.LEFT and self.rectangle.x > 0:
             self.rectangle.x -= self.speed * steps
             return True
+<<<<<<< HEAD
         if direction == settings.RIGHT and self.rectangle.x < settings.SCREEN_WIDTH - self.rectangle.width:
             self.rectangle.x += self.speed * steps
             return True
         if direction == settings.DOWN and self.rectangle.y < settings.SCREEN_HEIGHT - self.rectangle.height:
+=======
+        if (direction == settings.RIGHT and
+                self.rectangle.x < settings.SCREEN_WIDTH - self.rectangle.width):
+            self.rectangle.x += self.speed * steps
+            return True
+        if (direction == settings.DOWN and
+                self.rectangle.y < settings.SCREEN_HEIGHT - self.rectangle.height):
+>>>>>>> devel
             self.rectangle.y += self.speed * steps
             return True
         if direction == settings.UP and self.rectangle.y > 0:
